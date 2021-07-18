@@ -1,0 +1,18 @@
+type Album 
+  @model 
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  photos: [Photo] @connection(keyName: "byAlbum", fields: ["id"])
+}
+
+type Photo
+  @model
+  @auth(rules: [{ allow: owner }])
+  @key(name: "byAlbum", fields: ["albumID"]) {
+  id: ID!
+  name: String!
+  s3key: String!
+  albumID: ID!
+  album: Album @connection(fields: ["albumID"])
+}
